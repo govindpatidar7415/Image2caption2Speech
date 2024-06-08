@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image to Speech Converter</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f8f9fa; /* Light grey background */
+            color: #333; /* Dark grey text color */
+            background-image: linear-gradient(120deg, #2980b9, #2c3e50); /* Gradient background */
+        }
+
+        .container {
+            margin-top: 50px;
+        }
+
+        .jumbotron {
+            background-color: rgba(0,0,0,0.5); /* Semi-transparent dark background for jumbotron */
+            color: #ffffff; /* White text color */
+            text-align: center;
+            padding: 40px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+        }
+
+        .upload-form {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .form-control-file {
+            width: auto;
+            display: inline-block;
+            margin-right: 10px;
+        }
+
+        .btn-primary {
+            background-color: #3498db; /* Primary button color */
+            border-color: #3498db;
+            padding: 12px 40px; /* Increased padding for a larger button */
+            font-size: 18px;
+            transition: all 0.3s ease-in-out;
+            border-radius: 5px; /* Rounded corners for the button */
+        }
+
+        .btn-primary:hover {
+            background-color: #2980b9;
+            border-color: #2980b9;
+            transform: scale(1.05); /* Slightly scale up the button on hover */
+        }
+
+        .btn-secondary {
+            background-color: #95a5a6; /* Secondary button color */
+            border-color: #95a5a6;
+            padding: 12px 20px; /* Increased padding for a larger button */
+            font-size: 18px;
+            transition: all 0.3s ease-in-out;
+            border-radius: 5px; /* Rounded corners for the button */
+            margin-left: 10px; /* Add margin to separate from other button */
+        }
+
+        .btn-secondary:hover {
+            background-color: #7f8c8d;
+            border-color: #7f8c8d;
+            transform: scale(1.05); /* Slightly scale up the button on hover */
+        }
+
+        .result-container {
+            margin-top: 30px;
+            border: 1px solid #ddd; /* Add border around result container */
+            border-radius: 5px; /* Rounded corners for the result container */
+            padding: 20px; /* Add padding inside result container */
+        }
+
+        .result-img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        .result-text {
+            font-size: 24px;
+            font-style: italic;
+            background-color: #fff; /* White background for text */
+            padding: 10px; /* Add padding to text */
+            border-radius: 5px; /* Rounded corners for text */
+            margin-bottom: 15px; /* Add margin below text */
+        }
+
+        .result-audio {
+            display: block; /* Make audio element a block element */
+            margin-top: 15px; /* Add margin above audio */
+        }
+
+        .result-input {
+            font-size: 18px;
+            background-color: #fff; /* White background for input */
+            padding: 10px; /* Add padding to input */
+            border-radius: 5px; /* Rounded corners for input */
+            margin-bottom: 15px; /* Add margin below input */
+            border: 1px solid #ddd; /* Add border around input */
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="jumbotron">
+            <h1 class="display-3">Image to Speech Converter</h1>
+            <p class="lead">Upload an image and convert it to speech</p>
+        </div>
+
+        <form class="upload-form" enctype="multipart/form-data" action="/" method="POST">
+            <label class="mr-2"><b>Upload Image:</b></label>
+            <input type="file" class="form-control-file" name="image">
+            <button type="submit" class="btn btn-primary">Convert</button>
+            <button type="button" class="btn btn-secondary" onclick="clearFileInput()">Clear</button>
+        </form>
+
+        {% if results %}
+        <div class="row result-container">
+            <div class="col-md-4">
+                <img src="{{ results.image }}" class="result-img">
+            </div>
+            <div class="col-md-8">
+                <p class="result-text">Generated Caption:</p>
+                <p class="result-input"><b>{{ results.description }}</b></p>
+                <p class="result-text">Generated Speech:</p>
+                <audio controls class="result-audio">
+                    <source src="{{results.audio_path }}" type="audio/mp3">
+                    Your browser does not support the audio element.
+                </audio>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+    
+    <script>
+        function clearFileInput() {
+            document.querySelector('input[type="file"]').value = '';
+            window.location = '/'; // Redirect to index page
+        }
+    </script>
+</body>
+</html>
